@@ -23,9 +23,10 @@ import javax.imageio.stream.MemoryCacheImageOutputStream;
 public class JPEGCompressor {
     
     public static void main(String[] args) {
-        File originalImage = new File("C:\\Users\\Jatin\\Desktop\\Fuck.jpeg");
-        File compressedImage = new File("C:\\Users\\Jatin\\Desktop\\Compressed.jpeg");
+        //File originalImage = new File("C:\\Users\\Jatin\\Desktop\\Fuck.jpeg");
+        //File compressedImage = new File("C:\\Users\\Jatin\\Desktop\\Compressed.jpeg");
         
+        /*
         try{
             compressJPEGImage(originalImage,compressedImage,0.5f);
             System.out.println("done");
@@ -34,12 +35,13 @@ public class JPEGCompressor {
             e.printStackTrace();
             
         }
+        */
     }
     
-    public static int compressJPEGImage(File originalImage, File compressedImage, float compressionQuality)throws IOException{
+    public static int compressJPEGImage(File originalImage, File compressedImage, float compressionQuality,String extension)throws IOException{
         
         RenderedImage image = ImageIO.read(originalImage);
-        ImageWriter jpegWriter = ImageIO.getImageWritersByFormatName("jpeg").next();
+        ImageWriter jpegWriter = ImageIO.getImageWritersByFormatName(extension).next();
         ImageWriteParam jpegWriteParam = jpegWriter.getDefaultWriteParam();
         jpegWriteParam.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
         jpegWriteParam.setCompressionQuality(compressionQuality);

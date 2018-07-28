@@ -32,7 +32,9 @@ public class CompressionUi extends javax.swing.JFrame  {
     File originalImage,compressedImage;
     
     String str[] = new String[10];
-    String pathToSplit;
+    String imagePath,extension;
+    int complete;
+    float compressionFactor;
        
     
     /**
@@ -50,7 +52,7 @@ public class CompressionUi extends javax.swing.JFrame  {
         chooseFile = new javax.swing.JButton();
         txtCompressionFactor = new javax.swing.JTextField();
         submit = new javax.swing.JButton();
-        jLabel3 = new javax.swing.JLabel();
+        Done = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -89,9 +91,9 @@ public class CompressionUi extends javax.swing.JFrame  {
             }
         });
 
-        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(255, 0, 0));
-        jLabel3.setText("Done!!!");
+        Done.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        Done.setForeground(new java.awt.Color(255, 0, 0));
+        Done.setText("Done!!!");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -99,7 +101,7 @@ public class CompressionUi extends javax.swing.JFrame  {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(Done, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(145, 145, 145))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(38, 38, 38)
@@ -136,7 +138,7 @@ public class CompressionUi extends javax.swing.JFrame  {
                 .addGap(42, 42, 42)
                 .addComponent(submit)
                 .addGap(18, 18, 18)
-                .addComponent(jLabel3)
+                .addComponent(Done)
                 .addContainerGap(29, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
@@ -173,20 +175,59 @@ public class CompressionUi extends javax.swing.JFrame  {
     private void submitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitActionPerformed
         // TODO add your handling code here:
         
-        float compressionFactor = Float.parseFloat(""+txtCompressionFactor.getText()+"");
-         
+        //originalImage Path
+        originalImage = new File(imagePath);
+        
+        //input compression Factor
+        try{
+             compressionFactor = Float.parseFloat(""+txtCompressionFactor.getText()+"");
+        }
+        catch(Exception e){
+            
+        }
         // String compressionFactor = txtCompressionFactor.getText();
-         System.out.println(compressionFactor);
+        // System.out.println(compressionFactor);
          
-         System.out.println(this.str.length);
+         //System.out.println(this.str.length);
          
+         //Object creation to call compressJPEGImage
          JPEGCompressor compressing =  new JPEGCompressor();
          
-          for(String k:this.str){
+         //this.str = imagePath.split(".",-6);
+         
+         //finding extenstion of the file
+         int i= imagePath.indexOf(".");
+         if(i>0){
+              extension = imagePath.substring(i+1);
+         }
+         
+         //String buffer to make compressed file using copy
+         StringBuffer sb = new StringBuffer(imagePath);
+         sb.insert(i,"copy");
+         
+         //c
+         compressedImage = new File(sb.toString());
+         //System.out.println(sb);
+         //compressedImage = new compressedImage(sb);
+         //System.out.println(extension);
+         /*
+         for(String k:this.str){
              System.out.println(k);
          }
-          System.out.println("10");
+          */
+         
           
+          //System.out.println(imagePath);
+          
+          try{
+          complete=compressing.compressJPEGImage(originalImage,compressedImage,compressionFactor,extension) ;
+          }
+          catch(Exception e)
+          {
+              e.printStackTrace();
+          }
+          
+          System.out.println(complete);
         /* 
         try {
             compressing.compressJPEGImage(this.originalImage,this.compressedImage,compressionFactor);
@@ -208,9 +249,9 @@ public class CompressionUi extends javax.swing.JFrame  {
          originalImage = chooser.getSelectedFile();
          String path = originalImage.getAbsolutePath();
          jTextField1.setText(path);
+         imagePath = path;
          
-         System.out.println(path);
-         
+         /*
          System.out.println("location");
          this.str = path.split(".",0);
          
@@ -218,7 +259,7 @@ public class CompressionUi extends javax.swing.JFrame  {
          for(String k:this.str){
              System.out.println(k);
          }
-         
+         */
          
     }//GEN-LAST:event_chooseFileActionPerformed
 
@@ -264,10 +305,10 @@ public class CompressionUi extends javax.swing.JFrame  {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel Done;
     private javax.swing.JButton chooseFile;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JButton submit;
